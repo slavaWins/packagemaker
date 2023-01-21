@@ -53,11 +53,11 @@ class MakePackage extends Command
         $f = file_get_contents($path);
         $f = $this->ReplaceText($f);
 
-        if (substr_count(basename($path), $this->className)) {
+        $name = basename($path);
+        $nameTo =$this->ReplaceText( basename($path));
+        if ($name<>$nameTo) {
             File::delete($path);
-            $fname = basename($path);
-            $fname = $this->ReplaceText($fname);
-            $path = str_replace(basename($path), $fname, $path);
+            $path = str_replace(basename($path), $nameTo, $path);
         }
         file_put_contents($path, $f);
     }
@@ -93,6 +93,12 @@ class MakePackage extends Command
         $ignore = [];
         $ignore['MakePackage.php'] = true;
         foreach (File::allFiles($vendorPathPackage) as $K => $V) {
+
+            if(isset($ignore[basename($V)])){
+                File::delete($V);
+                continue;
+            }
+
             $this->ReplaceFile($V);
         }
 
