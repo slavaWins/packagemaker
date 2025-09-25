@@ -39,12 +39,35 @@ class MakePackage extends Command
     public $className;
     public $ind;
 
+    function toCamelCase($string)
+    {
+        $str = str_replace(['-', '_'], ' ', $string);
+        $str = ucwords($str);
+        $str = str_replace(' ', '', $str);
+
+         //   $str = lcfirst($str);
+
+        return $str;
+    }
+
     public function ReplaceText($f)
     {
+
+        $ind = $this->ind;
+     //   $ind = str_replace(['-', '.',' '], '_', $ind);
+
+        $cln = $this->className;
+     //   $cln = $this->toCamelCase($cln);
+
+
+
         $f = str_replace('MakePackage::class,', '', $f);
-        $f = str_replace('packagemaker', $this->ind, $f);
-        $f = str_replace('PackageMaker', $this->className, $f);
+        $f = str_replace('packagemaker', $ind, $f);
+        $f = str_replace('PackageMaker', $cln, $f);
         $f = str_replace('slavawins', $this->author, $f);
+
+
+
         return $f;
     }
 
